@@ -1,0 +1,256 @@
+:host {
+  --bg: #f4efe6;
+  --ink: #182126;
+  --muted: #56636b;
+  --panel: rgba(255, 252, 246, 0.8);
+  --line: rgba(24, 33, 38, 0.12);
+  --accent: #d95d39;
+  --accent-strong: #b74826;
+  --alive: #182126;
+  --dead: rgba(255, 255, 255, 0.72);
+  display: block;
+  min-height: 100vh;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at top left, rgba(217, 93, 57, 0.22), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(24, 33, 38, 0.18), transparent 24%),
+    linear-gradient(135deg, #f7f2ea 0%, #efe7db 100%);
+  font-family: Bahnschrift, "Trebuchet MS", "Segoe UI", sans-serif;
+}
+
+.shell {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 20px;
+  align-items: end;
+  margin-bottom: 24px;
+}
+
+.eyebrow,
+.lede,
+.status-card span,
+.field span {
+  color: var(--muted);
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+h1,
+h2,
+strong {
+  font-family: Aptos, Bahnschrift, "Segoe UI", sans-serif;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  line-height: 0.95;
+}
+
+.lede {
+  max-width: 48rem;
+  margin: 16px 0 0;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.status-card,
+.panel,
+.board-panel {
+  backdrop-filter: blur(14px);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  box-shadow: 0 18px 50px rgba(24, 33, 38, 0.09);
+}
+
+.status-card {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 20px;
+}
+
+.status-card div,
+.field,
+.panel {
+  display: grid;
+  gap: 8px;
+}
+
+.status-card strong {
+  font-size: 1.65rem;
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(300px, 360px) minmax(0, 1fr);
+  gap: 24px;
+}
+
+.controls {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+
+.panel {
+  padding: 18px;
+}
+
+h2 {
+  margin: 0 0 4px;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.button-row,
+.grid-size,
+.range-row {
+  display: grid;
+  gap: 10px;
+}
+
+.button-row {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.grid-size {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button,
+select,
+input[type='number'] {
+  min-height: 44px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--ink);
+}
+
+button {
+  padding: 0 14px;
+  cursor: pointer;
+  transition: transform 160ms ease, background-color 160ms ease, border-color 160ms ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(24, 33, 38, 0.24);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  transform: none;
+}
+
+.accent {
+  background: var(--accent);
+  border-color: transparent;
+  color: #fffaf5;
+}
+
+.accent:hover {
+  background: var(--accent-strong);
+}
+
+select,
+input[type='number'] {
+  padding: 0 12px;
+}
+
+input[type='range'] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.range-row {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+}
+
+.board-panel {
+  padding: 18px;
+  min-height: 60vh;
+}
+
+.board {
+  display: grid;
+  gap: 2px;
+  padding: 8px;
+  border-radius: 18px;
+  background:
+    linear-gradient(145deg, rgba(24, 33, 38, 0.05), rgba(24, 33, 38, 0.12)),
+    rgba(255, 255, 255, 0.55);
+}
+
+.cell {
+  min-height: 0;
+  aspect-ratio: 1;
+  border-radius: 4px;
+  border: none;
+  background: var(--dead);
+  padding: 0;
+}
+
+.cell:hover {
+  transform: none;
+  background: rgba(217, 93, 57, 0.36);
+}
+
+.cell-alive {
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.28), transparent 32%),
+    var(--alive);
+}
+
+.error {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgba(217, 93, 57, 0.16);
+  color: #8a2f18;
+}
+
+@media (max-width: 1100px) {
+  .hero,
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .board-panel {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 680px) {
+  .shell {
+    padding: 16px;
+  }
+
+  .status-card,
+  .button-row,
+  .grid-size {
+    grid-template-columns: 1fr;
+  }
+}

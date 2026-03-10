@@ -1,0 +1,129 @@
+@if (state(); as snapshot) {
+  <main class="shell">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Conway's Game of Life</p>
+        <h1>Server-driven cellular simulation.</h1>
+        <p class="lede">
+          Every rule runs in the API. The client only renders state, sends commands,
+          and follows the server clock.
+        </p>
+      </div>
+
+      <div class="status-card">
+        <div>
+          <span>Generation</span>
+          <strong>{{ snapshot.generation }}</strong>
+        </div>
+        <div>
+          <span>Population</span>
+          <strong>{{ snapshot.aliveCells.length }}</strong>
+        </div>
+        <div>
+          <span>Speed</span>
+          <strong>{{ snapshot.speed }} gen/s</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <aside class="controls">
+        <div class="panel">
+          <h2>Simulation</h2>
+          <div class="button-row">
+            <button type="button" (click)="step()" [disabled]="snapshot.isPlaying">Step</button>
+            <button type="button" class="accent" (click)="togglePlayback()">
+              {{ snapshot.isPlaying ? 'Pause' : 'Play' }}
+            </button>
+            <button type="button" (click)="reset()">Reset</button>
+          </div>
+
+          <label class="field">
+            <span>Speed</span>
+            <div class="range-row">
+              <input
+                type="range"
+                min="1"
+                max="30"
+                [ngModel]="snapshot.speed"
+                (ngModelChange)="updateSpeed($event)"
+              />
+              <strong>{{ snapshot.speed }}</strong>
+            </div>
+          </label>
+        </div>
+
+        <div class="panel">
+          <h2>Patterns</h2>
+          <label class="field">
+            <span>Preset</span>
+            <select [ngModel]="selectedPattern()" (ngModelChange)="setPattern($event)">
+              @for (pattern of snapshot.availablePatterns; track pattern) {
+                <option [value]="pattern">{{ pattern }}</option>
+              }
+            </select>
+          </label>
+          <button type="button" (click)="loadPattern()">Load Pattern</button>
+        </div>
+
+        <div class="panel">
+          <h2>Grid</h2>
+          <div class="grid-size">
+            <label class="field">
+              <span>Width</span>
+              <input type="number" min="10" max="100" [ngModel]="sizeWidth()" (ngModelChange)="setWidth($event)" />
+            </label>
+            <label class="field">
+              <span>Height</span>
+              <input type="number" min="10" max="100" [ngModel]="sizeHeight()" (ngModelChange)="setHeight($event)" />
+            </label>
+          </div>
+          <button type="button" (click)="applyGridSize()">Resize Grid</button>
+
+          <label class="field">
+            <span>Random Density</span>
+            <div class="range-row">
+              <input
+                type="range"
+                min="0"
+                max="100"
+                [ngModel]="density()"
+                (ngModelChange)="setDensity($event)"
+              />
+              <strong>{{ density() }}%</strong>
+            </div>
+          </label>
+
+          <div class="button-row">
+            <button type="button" (click)="randomizeGrid()">Randomize</button>
+            <button type="button" (click)="clearGrid()">Clear</button>
+          </div>
+        </div>
+
+        @if (error()) {
+          <p class="error">{{ error() }}</p>
+        }
+      </aside>
+
+      <section class="board-panel">
+        <div
+          class="board"
+          [style.gridTemplateColumns]="'repeat(' + snapshot.width + ', minmax(0, 1fr))'"
+          [style.aspectRatio]="snapshot.width + ' / ' + snapshot.height"
+        >
+          @for (row of rows(); track trackByValue($index, row)) {
+            @for (column of columns(); track trackByValue($index, column)) {
+              <button
+                type="button"
+                class="cell"
+                [class.cell-alive]="isAlive(column, row)"
+                [attr.aria-label]="'Toggle cell ' + column + ',' + row"
+                (click)="toggleCell(column, row)"
+              ></button>
+            }
+          }
+        </div>
+      </section>
+    </section>
+  </main>
+}
